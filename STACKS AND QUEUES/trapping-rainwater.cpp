@@ -29,7 +29,7 @@ using namespace std;
         //O(N) time and 0(1) space
   int n = height.size();
   int left = 0, right = n - 1; //left and right pointers
-  int res = 0;
+  int res = 0; // total water 
   int maxLeft = 0, maxRight = 0; // Prefix max's 
   while (left <= right) {
     if (height[left] <= height[right]) {

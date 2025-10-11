@@ -1,5 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
+//NOT OPTIMAL
+//O(3N) TC AND O(4N) SPACE
+//Previous Smaller Element
+vector<int> previousSmaller(vector<int>& heights) {
+    int n = heights.size();
+    vector<int> pse(n);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && heights[st.top()] >= heights[i])
+            st.pop();
+        if (st.empty()) pse[i] = -1;
+        else pse[i] = st.top();
+        st.push(i);
+    }
+    return pse;
+}
+
+//Next Smaller Element
+vector<int> nextSmaller(vector<int>& heights) {
+    int n = heights.size();
+    vector<int> nse(n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && heights[st.top()] >= heights[i])
+            st.pop();
+        if (st.empty()) nse[i] = n;
+        else nse[i] = st.top();
+        st.push(i);
+    }
+    return nse;
+}
+
+// Function to compute largest rectangle area
+long long largestRectangleArea(vector<int>& heights) {
+    int n = heights.size();
+
+    vector<int> pse = previousSmaller(heights);
+    vector<int> nse = nextSmaller(heights);
+
+    long long maxArea = 0;
+    for (int i = 0; i < n; i++) {
+        long long width = nse[i] - pse[i] - 1;
+        long long area =  heights[i] * width;
+        maxArea = max(maxArea, area);
+    }
+
+    return maxArea;
+}
+
+// Driver code
+int main() {
+    vector<int> heights = {2, 1, 5, 6, 2, 3};
+    cout << largestRectangleArea(heights);
+    return 0;
+}
+
+// OPTIMAL 
+// O(N) TC AND O(2N ) SC
+
+#include <bits/stdc++.h>
+using namespace std;
 
 class Solution {
 public:
